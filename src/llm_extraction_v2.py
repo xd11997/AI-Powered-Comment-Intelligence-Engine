@@ -17,31 +17,42 @@ def extract_insights_from_chunk(comment_chunk):
 
     prompt = f"""
 
-You are an AI system extracting structured audience insights.
-
 Below is a list of comments under a specific content topic.
 
-Your task:
+Your task is to extract structured insights that help creators understand what resonates with audiences.
 
-1. Identify up to 5 audience interest themes.
-   - Focus on content aspects that attracted audience attention.
-   - Ignore pure emotional expressions (e.g., "I love this", "I'm crying").
-   - Internally prioritize themes that are mentioned more frequently.
-   - Only include themes clearly supported by repeated mentions.
-   - Do NOT include frequency numbers or explanations in the theme labels.
-   - Do NOT prioritize diversity or balance.
+1) Identify up to 5 Content Elements.
+   - Prefer concrete entities.
+   - Ignore generic emotional reactions such as "I love this", emojis only, or short excitement phrases.
+   - Only include themes clearly supported by repeated mentions. 
 
-2. Identify up to 3 positive content drivers.
-3. Identify up to 3 recurring pain points.
+2) Identify up to 3 Audience Identity Signals.
+   - Capture patterns that describe who the engaged audience appears to be.
+   - Only include signals explicitly observable in the comments.
+
+3) Identify up to 3 Engagement Drivers.
+   - Extract recurring reasons why audiences seem highly engaged.
+   - Engagement Drivers should describe psychological or interaction mechanisms (e.g., relatability, insider references, participatory prompts), not just topics.
+
+4) Identify up to 3 Recurring Frustrations.
+   - Capture repeated dissatisfaction, confusion, or requests expressed in comments.
+   - If none are clearly present, return "N/A".
 
 Rules:
-- Only use information explicitly present in comments.
-- Be concise.
-- Output strictly in JSON format with fields:
-  audience_interest_themes (only themes, no frequency needed),
-  positive_content_drivers,
-  recurring_pain_points. 
-- If there is no reasonable output, please return "None".
+- Only use information explicitly present in the comments.
+- Do not invent patterns not grounded in the data.
+- Be concise and specific and avoid umbrella categories
+- Avoid abstract generalizations unless directly grounded in explicit comment content.
+- Output strictly in JSON format with the following structure:
+
+{{
+  "content_elements": [],
+  "audience_identity_signals": [],
+  "engagement_drivers": [],
+  "audience_painpoints": []
+}}
+
+If no valid signals exist for a section, return an string "N/A" for that section.
 
 Comments:
 {joined_comments}

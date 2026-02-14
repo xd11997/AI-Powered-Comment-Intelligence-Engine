@@ -49,7 +49,7 @@ Rules:
   "content_themes": [],
   "audience_identity_signals": [],
   "engagement_drivers": [],
-  "recurring_frustrations": []
+  "audience_painpoints": []
 }}
 
 If no valid signals exist for a section, return an string "N/A" for that section.

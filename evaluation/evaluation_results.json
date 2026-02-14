@@ -1,8 +1,20 @@
-{
-    "relevance": 2,
-    "coherence": 3,
-    "distinctiveness": 4,
-    "coverage": 3,
-    "total": 12,
-    "percentage": "75.00%"
-}
+[
+    {
+        "version": "v1",
+        "relevance": 2,
+        "coherence": 3,
+        "distinctiveness": 4,
+        "coverage": 3,
+        "total": 12,
+        "percentage": "75.00%"
+    },
+    {
+        "version": "v2",
+        "relevance": 4,
+        "coherence": 4,
+        "distinctiveness": 3,
+        "coverage": 3,
+        "total": 14,
+        "percentage": "87.50%"
+    }
+]
