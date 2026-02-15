@@ -94,7 +94,8 @@ def aggregate_insights_with_clustering(group_results, eps=0.35):
             embs_in = np.array(cluster_embs[lab])
             label = canonical_label_for_cluster(texts_in, embs_in)
             freq = len(set(cluster_sources[lab]))
-            result.append((label, freq, texts_in))
+            if freq >= 2:
+                result.append((label, freq, texts_in))
 
         result.sort(key=lambda x: x[1], reverse=True)
         return result
