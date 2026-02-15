@@ -34,14 +34,10 @@ def cluster_texts(texts, eps=0.35, min_samples=1):
 
 def canonical_label_for_cluster(texts_in_cluster, embs_in_cluster):
     """
-    从簇内选代表：选择与簇中心最接近的短语作为 label。
-    也可以在此处调用 LLM 将该短语润色为更友好的标签（可选）。
+    选择更长的一条显示。
     """
-    centroid = np.mean(embs_in_cluster, axis=0)
-    # 计算距离，选最小距离项
-    dists = np.linalg.norm(embs_in_cluster - centroid, axis=1)
-    idx = int(np.argmin(dists))
-    return texts_in_cluster[idx]
+    texts_in_cluster = sorted(texts_in_cluster, key=len, reverse=True)
+    return texts_in_cluster[0]
 
 def aggregate_insights_with_clustering(group_results, eps=0.35):
     """
@@ -57,47 +53,62 @@ def aggregate_insights_with_clustering(group_results, eps=0.35):
                 items.append({"text": phrase, "source_idx": i})
         return items
 
-    themes = collect("audience_interest_themes")
-    pos = collect("positive_content_drivers")
-    pains = collect("recurring_pain_points")
+    themes = collect("content_elements")
+    audience = collect("audience_identity_signals")
+    pos = collect("engagement_drivers")
+    pains = collect("audience_painpoints")
 
     def process_collection(items):
         if not items:
             return []
-        texts = [it["text"] for it in items]
+
+        cleaned_items = []
+        for it in items:
+            text = str(it["text"]).strip()
+            if not text:
+                continue
+            if text.upper() in ["N/A", "NA", "NONE"]:
+                continue
+            if text in ["N", "/", "A"]:
+                continue
+            cleaned_items.append({"text": text, "source_idx": it["source_idx"]})
+
+        if not cleaned_items:
+            return []
+
+        texts = [it["text"] for it in cleaned_items]
+
         labels, embs = cluster_texts(texts, eps=eps)
+
         clusters = defaultdict(list)
         cluster_embs = defaultdict(list)
         cluster_sources = defaultdict(list)
+
         for i, lab in enumerate(labels):
             clusters[lab].append(texts[i])
             cluster_embs[lab].append(embs[i])
-            cluster_sources[lab].append(items[i]["source_idx"])
-        # build summary with representative label and frequency (count of unique source chunks)
+            cluster_sources[lab].append(cleaned_items[i]["source_idx"])
+
         result = []
         for lab, texts_in in clusters.items():
             embs_in = np.array(cluster_embs[lab])
             label = canonical_label_for_cluster(texts_in, embs_in)
-            # frequency: count how many unique chunk indices contributed to this cluster
             freq = len(set(cluster_sources[lab]))
             result.append((label, freq, texts_in))
-        # sort by freq
+
         result.sort(key=lambda x: x[1], reverse=True)
         return result
 
+
     themes_agg = process_collection(themes)
+    audience_agg = process_collection(audience)
     pos_agg = process_collection(pos)
     pains_agg = process_collection(pains)
 
     final_report = {
-        "top_audience_interest_themes": [(t[0], t[1]) for t in themes_agg[:5]],
-        "top_positive_content_drivers": [(t[0], t[1]) for t in pos_agg[:3]],
-        "top_recurring_pain_points": [(t[0], t[1]) for t in pains_agg[:3]],
-        # optionally include raw clusters for debugging/visualization
-        "raw_clusters": {
-            "themes": themes_agg,
-            "positive_drivers": pos_agg,
-            "pains": pains_agg
-        }
+        "top_content_elements": [(t[0], t[1]) for t in themes_agg[:5]] if themes_agg else None,
+        "top_audience_insights": [(t[0], t[1]) for t in audience_agg[:3]] if audience_agg else None,
+        "top_engagement_drivers": [(t[0], t[1]) for t in pos_agg[:3]] if pos_agg else None,
+        "top_audience_pain_points": [(t[0], t[1]) for t in pains_agg[:3]] if pains_agg else None,
     }
     return final_report
