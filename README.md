@@ -2,8 +2,6 @@
 
 ## Overview
 
-## Overview
-
 This project builds a scalable AI pipeline for extracting structured insights from large-scale comment data.
 
 The system converts unstructured user discussions into recurring, interpretable themes using LLM-based semantic abstraction and density-based clustering.
