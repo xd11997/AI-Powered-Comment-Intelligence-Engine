@@ -2,11 +2,13 @@
 
 ## Overview
 
-This project builds an applied AI pipeline for extracting structured audience insights from large-scale YouTube comment data.
+## Overview
 
-Using a real-world YouTube Comments dataset from Kaggle (~28,000 comments), the system transforms unstructured user discussions into recurring, interpretable themes that reflect audience preferences and engagement patterns.
+This project builds a scalable AI pipeline for extracting structured insights from large-scale comment data.
 
-The focus is on converting noisy text into structured, decision-ready intelligence through embedding-based clustering and LLM-guided summarization.
+The system converts unstructured user discussions into recurring, interpretable themes using LLM-based semantic abstraction and density-based clustering.
+
+While the pipeline can operate on any comment dataset, a high-value use case is cross-video topic-level analysis within a platform, where distributed comment signals can be aggregated into audience-level intelligence.
 
 ---
 
@@ -19,11 +21,11 @@ Large volumes of user comments contain valuable behavioral signals, but they are
 - Difficult to aggregate systematically  
 
 Manual review does not scale.  
-Traditional keyword-based approaches fail to capture semantic similarity.  
+Unsupervised aggregation methods can group similar expressions, but they often fail to resolve semantic noise and mixed signals within large-scale comment data.
 
 The challenge is:
 
-> How can we systematically extract recurring and meaningful audience signals from tens of thousands of comments in a robust and interpretable way?
+> How can we systematically extract recurring and meaningful content and audience signals from tens of thousands of comments in a robust and interpretable way?
 
 ---
 
@@ -84,6 +86,19 @@ Clustered insights are then:
 The final output reflects recurring audience intelligence grounded in aggregated engagement patterns.
 
 ---
+## Core Design Principles
+
+### 1. Preserve High-Resolution Semantic Signals
+
+System design should avoid premature compression of complex user expressions.  
+Processing stages must preserve semantically meaningful signals before irreversible aggregation occurs.
+
+### 2. Ensure Bounded LLM Complexity
+
+LLM with variable cost and stochastic behavior should operate under controlled and predictable task scopes.
+Bounding workload variability supports scalable engineering, cost awareness, and consistent output behavior.
+
+---
 
 ## Output Structure
 
@@ -106,22 +121,8 @@ Below is a demonstration of the insight generation workflow:
 
 ---
 
-## Why This Project Matters
-
-This project demonstrates:
-
-- Applied NLP beyond surface-level keyword analysis  
-- Embedding-based clustering for semantic pattern discovery  
-- Practical parameter exploration and model stability evaluation  
-- Transformation of large-scale text data into structured insights  
-
-It emphasizes robustness, interpretability, and applied AI system design.
-
----
-
 ## Potential Extensions
-
-- Cross-video comparative analysis  
-- Temporal evolution of audience signals  
+ 
+- Temporal evolution of extracted insight patterns
 - Multilingual clustering  
 - Dashboard integration for interactive exploration  
