@@ -1,82 +1,127 @@
-# AI-Powered Platform-Native Audience Insight Engine
+# AI-Powered Audience Insight Engine
 
 ## Overview
 
-This project is an AI-powered system designed to help content creators make smarter content strategy decisions by extracting **TikTok-native audience signals** from TikTok comment data.
+This project builds an applied AI pipeline for extracting structured audience insights from large-scale YouTube comment data.
 
-Unlike generic topic research or demographic reports, this system focuses on insights derived directly from users who actively engage with content within a specific topic inside the TikTok ecosystem.
+Using a real-world YouTube Comments dataset from Kaggle (~28,000 comments), the system transforms unstructured user discussions into recurring, interpretable themes that reflect audience preferences and engagement patterns.
 
-The goal is to support creators at the content planning stage by providing structured, cross-video intelligence about what truly resonates with audiences on the platform.
+The focus is on converting noisy text into structured, decision-ready intelligence through embedding-based clustering and LLM-guided summarization.
 
 ---
 
 ## Problem
 
-When planning new content under a specific topic (e.g., Lifestyle), creators often ask:
+Large volumes of user comments contain valuable behavioral signals, but they are:
 
-- What do audiences in this topic actually care about on TikTok?
-- What content patterns tend to drive positive engagement?
-- What recurring frustrations appear in discussions?
-
-While creators can manually browse videos and read comments, extracting consistent patterns across multiple posts is:
-
-- Time-consuming  
-- Hard to quantify  
-- Cognitively overwhelming  
+- Unstructured  
+- Redundant  
 - Difficult to aggregate systematically  
 
-Traditional desk research may reveal high-level audience interests, but it cannot capture **platform-specific behavioral signals**, such as tone preference, authenticity perception, content pacing feedback, or recurring format-related frustrations.
+Manual review does not scale.  
+Traditional keyword-based approaches fail to capture semantic similarity.  
 
-There is a need for structured, platform-native intelligence derived directly from engagement data.
+The challenge is:
 
----
-
-## Solution
-
-This system analyzes cross-video comment data under a selected topic and extracts structured audience intelligence, including:
-
-- **Top Audience Interest Themes**
-- **Positive Content Drivers**
-- **Recurring Audience Pain Points**
-
-These insights are derived from users who actively engage with content in that topic within TikTok, providing a refined and behavior-driven perspective rather than generic market-level insights.
+> How can we systematically extract recurring and meaningful audience signals from tens of thousands of comments in a robust and interpretable way?
 
 ---
 
-## Core Differentiation
+## Dataset
 
-This project emphasizes **platform-native insight extraction**, meaning:
+- **Source:** Kaggle – YouTube Comments Dataset  
+- **Raw Size:** ~28,000 comments  
 
-- Signals come from actual engagement behavior  
-- Data reflects real comment-level interaction patterns  
-- Insights are topic-specific and ecosystem-specific  
-- Results are grounded in observable platform dynamics  
+### Preprocessing Steps
+- Duplicate removal  
+- Non-English comment filtering  
+- Text normalization  
 
-This is not demographic research.  
-This is engagement-driven audience intelligence.
-
----
-
-## Technical Approach
-
-- Cross-video comment aggregation under a selected topic  
-- Comment chunking for scalable processing  
-- LLM-based structured extraction (JSON schema constrained)  
-- Hierarchical summarization and deduplication  
-- Frequency-based ranking of recurring signals  
-- Strategy-oriented natural language summary generation  
+This ensures insights are derived from real engagement data while maintaining linguistic consistency.
 
 ---
 
-## Demo Scope
+## Methodology
 
-This repository demonstrates a proof-of-concept using a simulated dataset (300–500 comments) under a Lifestyle topic to illustrate scalable insight extraction within a platform context.
+### 1. Sampling & Chunking
+
+- Comments are batched into manageable chunks  
+- Chunk size is tuned to preserve contextual density  
+- Processing is designed to scale across thousands of comments  
+
+This stage ensures LLM efficiency while maintaining semantic coverage.
+
+### 2. LLM-Based Insight Extraction (Pre-Clustering)
+
+For each chunk:
+
+- Extract structured insights in schema-constrained JSON format  
+- Identify potential audience signals  
+- Reduce noise through semantic abstraction  
+
+This step converts unstructured comments into normalized, higher-level insight candidates.
+
+### 3. Embedding & Clustering on Extracted Insights
+
+- Sentence-transformer embeddings  
+- DBSCAN for density-based grouping  
+- Parameter exploration for stable semantic grouping  
+
+Clustering at the insight level improves:
+
+- Thematic coherence  
+- Noise robustness  
+- Interpretability  
+
+### 4. Insight Aggregation & Ranking
+
+Clustered insights are then:
+
+- Deduplicated  
+- Frequency-ranked  
+- Organized into structured dimensions  
+
+The final output reflects recurring audience intelligence grounded in aggregated engagement patterns.
+
+---
+
+## Output Structure
+
+The system generates structured audience intelligence including:
+
+- Content Elements  
+- Audience Sentiment Patterns  
+- Engagement Drivers  
+- Recurring Frustrations  
+
+Each theme is grounded in clustered comment evidence.
+
+---
+
+## Product Demo
+
+Below is a demonstration of the insight generation workflow:
+
+![Product Demo](presentation/demo.png)
+
+---
+
+## Why This Project Matters
+
+This project demonstrates:
+
+- Applied NLP beyond surface-level keyword analysis  
+- Embedding-based clustering for semantic pattern discovery  
+- Practical parameter exploration and model stability evaluation  
+- Transformation of large-scale text data into structured insights  
+
+It emphasizes robustness, interpretability, and applied AI system design.
 
 ---
 
 ## Potential Extensions
 
-- Multi-topic comparison  
-- Time-series insight tracking  
-- Multilingual audience analysis  
-- Integration into creator-facing dashboards  
+- Cross-video comparative analysis  
+- Temporal evolution of audience signals  
+- Multilingual clustering  
+- Dashboard integration for interactive exploration  
