@@ -124,3 +124,9 @@ Below is a demonstration of the insight generation workflow:
 - Temporal evolution of extracted insight patterns
 - Multilingual clustering  
 - Dashboard integration for interactive exploration  
+
+## Author & Attribution
+This project was independently developed by **[Iris Xia]**.
+
+All analyses, code, and visualizations are original.  
+Reuse or adaptation is permitted with proper attribution.
